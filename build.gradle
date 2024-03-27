@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    javaMainClass = 'org.example.Main'
+
+    cloudLogbackVersion = '0.131.4-alpha'
+    grpcVersion = '1.62.2'
+    junitJupiterVersion = '5.9.1'
+    logbackVersion = '1.5.3'
+}
+
+application {
+    mainClassName = javaMainClass
+}
+
+dependencies {
+    implementation "io.grpc:grpc-gcp-observability:${grpcVersion}"
+    implementation "com.google.cloud:google-cloud-logging-logback:${cloudLogbackVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    testImplementation platform("org.junit:junit-bom:${junitJupiterVersion}")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+test {
+    useJUnitPlatform()
+    environment "GRPC_GCP_OBSERVABILITY_CONFIG", "{}"
+}
